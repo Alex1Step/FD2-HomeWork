@@ -1,12 +1,81 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>homework</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <table class="SNoBorders">
+      <tbody>
+        <tr>
+          <td>Разработчики:</td>
+          <td><input type="text" name="author" style="width: 453px" /></td>
+        </tr>
+        <tr>
+          <td>Название сайта:</td>
+          <td><input type="text" name="title" style="width: 453px" /></td>
+        </tr>
+        <tr>
+          <td>URL сайта:</td>
+          <td><input type="text" name="title" style="width: 300px" /></td>
+        </tr>
+        <tr>
+          <td>Дата запуска сайта:</td>
+          <td><input type="text" name="startdate" style="width: 80px" /></td>
+        </tr>
+        <tr>
+          <td>Посетителей в сутки:</td>
+          <td><input type="text" name="persons" style="width: 80px" /></td>
+        </tr>
+        <tr>
+          <td>E-mail для связи:</td>
+          <td><input type="text" name="title" style="width: 200px" /></td>
+        </tr>
+        <tr>
+          <td>Рубрика каталога:</td>
+          <td style="padding-left: 1px">
+            <select name="rubric" style="width: 204px; margin-left: 2px">
+              <option value="1">здоровье</option>
+              <option value="2">домашний уют</option>
+              <option value="3" selected="">бытовая техника</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Размещение:</td>
+          <td style="padding: 2px 0 2px 0">
+            <input type="radio" name="public" value="1" /><span class="SRadio8a"
+              >бесплатное</span
+            >
+            <input type="radio" name="public" value="2" /><span class="SRadio8a"
+              >платное</span
+            >
+            <input type="radio" name="public" value="3" /><span class="SRadio8a"
+              >VIP</span
+            >
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px 0 3px 3px">Разрешить&nbsp;отзывы:</td>
+          <td><input type="checkbox" name="comments" /></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            Описание сайта:<br />
+            <textarea
+              name="article"
+              style="width: 608px; height: 50px"
+            ></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td><input type="submit" value="Опубликовать" /></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
     <script src="script.js"></script>
   </body>
 </html>

@@ -42,41 +42,52 @@
           <tr>
             <td>Рубрика каталога:</td>
             <td style="padding-left: 1px">
-              <select name="rubric" style="width: 204px; margin-left: 2px">
-                <option value="1">здоровье</option>
-                <option value="2">домашний уют</option>
-                <option value="3" selected="">бытовая техника</option>
-              </select>
+              <div>
+                <select name="rubric" style="width: 204px; margin-left: 2px">
+                  <option value="1" selected="">домашний уют</option>
+                  <option value="2">здоровье</option>
+                  <option value="3"></option>
+                  <option value="4">бытовая техника</option>
+                </select>
+              </div>
             </td>
           </tr>
           <tr>
             <td>Размещение:</td>
-            <td name="radiogr" style="padding: 2px 0 2px 0">
-              <input type="radio" name="public" value="1" /><span
-                class="SRadio8a"
-                >бесплатное</span
-              >
-              <input type="radio" name="public" value="2" /><span
-                class="SRadio8a"
-                >платное</span
-              >
-              <input type="radio" name="public" value="3" /><span
-                class="SRadio8a"
-                >VIP</span
-              >
+            <td style="padding: 2px 0 2px 0">
+              <div id="RGroup">
+                <input type="radio" class="rad" name="public" value="1" /><span
+                  class="SRadio8a"
+                  >бесплатное</span
+                >
+                <input type="radio" class="rad" name="public" value="2" /><span
+                  class="SRadio8a"
+                  >платное</span
+                >
+                <input type="radio" class="rad" name="public" value="3" /><span
+                  class="SRadio8a"
+                  >VIP</span
+                >
+              </div>
             </td>
           </tr>
           <tr>
             <td style="padding: 2px 0 3px 3px">Разрешить&nbsp;отзывы:</td>
-            <td><input type="checkbox" name="comments" /></td>
+            <td>
+              <div id="chckB">
+                <input type="checkbox" class="chkBx" name="comments" />
+              </div>
+            </td>
           </tr>
           <tr>
             <td colspan="2">
               Описание сайта:<br />
-              <textarea
-                name="article"
-                style="width: 608px; height: 50px"
-              ></textarea>
+              <div>
+                <textarea
+                  name="article"
+                  style="width: 608px; height: 50px"
+                ></textarea>
+              </div>
             </td>
           </tr>
           <tr>

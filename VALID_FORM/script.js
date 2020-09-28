@@ -44,7 +44,7 @@ function dateIsValid(value) {
     return false;
   }
 }
-
+//валидация текстовых полей
 function textFieldValidator(EO) {
   var EO = EO || window.event;
   var finishValue = EO.target.value.trim();
@@ -80,7 +80,7 @@ function textFieldValidator(EO) {
       break;
     case "persons":
       if (!Number(finishValue)) {
-        return otherConditions(EO, "Необходимо ввести число");
+        return otherConditions(EO, "Необходимо ввести именно число");
       }
       break;
     case "mail":
@@ -92,37 +92,37 @@ function textFieldValidator(EO) {
   if (EO.target.nextSibling) EO.target.nextSibling.remove();
   return true;
 }
-
-function emptyGroup(el) {
-  if (!el.nextSibling) {
-    var errElement = document.createElement("span");
-    errElement.setAttribute("id", "error");
-    errElement.innerHTML =
-      '<font color="red">   Вы не выбрали ни одного параметра</font>';
-    var par = el.parentNode;
-    par.appendChild(errElement);
+//валидация textarea отдельно, потому что условие if (!EO.target.nextSibling) как в emptyField для textarea не срабатывало
+function textAreaValidator(EO) {
+  var EO = EO || window.event;
+  var finishValue = EO.target.value.trim();
+  if (finishValue === "") {
+    var parN = EO.target.parentNode;
+    if (!(parN.lastChild.id === "error")) {
+      var errElement = document.createElement("span");
+      errElement.setAttribute("id", "error");
+      errElement.innerHTML = '<font color="red">   Вы не ввели значение</font>';
+      var par = EO.target.parentNode;
+      par.appendChild(errElement);
+      return false;
+    }
+    EO.target.nextSibling.innerHTML =
+      '<font color="red">   Вы не ввели значение</font>';
     return false;
   }
-  el.nextSibling.innerHTML =
-    '<font color="red">   Вы не выбрали ни одного параметра</font>';
-  return false;
-}
-
-function radioAndCheckValidator(EO) {
-  var EO = EO || window.event;
-  var radioArr = document.getElementsByName("public");
-  //поле осталось не заполненным
-  var count = 0;
-  for (var i = 0; i < radioArr.length; i++) {
-    if (radioArr[i].checked === true) count += 1;
-  }
-  if (count === 0) return emptyGroup(radioArr[radioArr.length - 1]);
-  if (radioArr[radioArr.length - 1].nextSibling)
-    radioArr[radioArr.length - 1].nextSibling.remove();
+  if (EO.target.nextSibling) EO.target.nextSibling.remove();
   return true;
 }
 
+//валидация всех полей по нажатию кнопки "Опубликовать"
 function allFormValid(EO) {
+  //очистка сообщений валидации radio input
+  var radioParent = document.querySelector("#RGroup");
+  if (radioParent.lastChild.id === "error") radioParent.lastChild.remove();
+  //очистка сообщений валидации checkbox
+  var chckParent = document.querySelector("#chckB");
+  if (chckParent.lastChild.id === "error") chckParent.lastChild.remove();
+  //валидация текстовых полей
   var tagForm = document.forms.validForm;
   var authorField = tagForm.elements.author;
   authorField.addEventListener("focus", textFieldValidator, false);
@@ -143,15 +143,72 @@ function allFormValid(EO) {
   mailField.addEventListener("focus", textFieldValidator, false);
   mailField.focus();
   var articleField = tagForm.elements.article;
-  articleField.addEventListener("focus", textFieldValidator, false);
-  articleField.focus();
-  var radioGroup = document.getElementsByName("radiogr")[0];
-  console.log(radioGroup);
-  radioGroup.addEventListener("focus", radioAndCheckValidator, false);
-  radioGroup.focus();
-  var checkGroup = document.getElementsByName("comments");
+  articleField.addEventListener("click", textAreaValidator, false);
+  articleField.click();
+  //валидация radio input
+  var checkedRadio = document.querySelector(".rad:checked");
+  if (!checkedRadio) {
+    var errRadio = document.createElement("span");
+    errRadio.setAttribute("id", "error");
+    errRadio.innerHTML =
+      '<font color="red">   Пожалуйста, выберите расположение</font>';
+    document.getElementById("RGroup").appendChild(errRadio);
+  }
+  //валидация checkbox`a
+  var checkedChckBx = document.querySelector(".chkBx:checked");
+  if (!checkedChckBx) {
+    var errChck = document.createElement("span");
+    errChck.setAttribute("id", "error");
+    errChck.innerHTML = '<font color="red">   Вы не разрешили отзывы</font>';
+    document.getElementById("chckB").appendChild(errChck);
+  }
 
-  if (document.getElementById("error")) EO.preventDefault();
+  if (document.getElementById("error")) {
+    //при наличии хотябы одной ошибки - отмена стандартного поведения браузера
+    EO.preventDefault();
+    //и перемещение фокуса к первому полю с ошибкой
+    var errorSpan = document.getElementById("error");
+    var errorParent = errorSpan.parentNode;
+    errorParent.firstChild.focus();
+  }
+}
+
+//если всё-таки в radio input выбрано какое-то значение убираем сообщение об ошибке
+function radioValid(EO) {
+  var EO = EO || window.event;
+  var checkedRadio = document.querySelector(".rad:checked");
+  if (checkedRadio) {
+    var radioParent = document.querySelector("#RGroup");
+    if (radioParent.lastChild.id === "error") radioParent.lastChild.remove();
+  }
+}
+
+//если всё-таки в checkbox`е поставили галочку сообщение об ошибке удаляем
+function chckBxValid(EO) {
+  var EO = EO || window.event;
+  var checkedBOX = document.querySelector(".chkBx:checked");
+  if (checkedBOX) {
+    var chckParent = document.querySelector("#chckB");
+    if (chckParent.lastChild.id === "error") chckParent.lastChild.remove();
+  }
+}
+//если в combobox`e выбрали пустое значение
+function selValid(EO) {
+  var EO = EO || window.event;
+  if (EO.target.childNodes[5].selected === true) {
+    var parN = EO.target.parentNode;
+    if (!(parN.lastChild.id === "error")) {
+      var errElement = document.createElement("span");
+      errElement.setAttribute("id", "error");
+      errElement.innerHTML =
+        '<font color="red">   Пожалуйста, выберите рубрику католога</font>';
+      var par = EO.target.parentNode;
+      par.appendChild(errElement);
+      return false;
+    }
+  }
+  if (EO.target.nextSibling) EO.target.nextSibling.remove();
+  return true;
 }
 
 var tagForm = document.forms.validForm;
@@ -169,11 +226,16 @@ personsField.addEventListener("blur", textFieldValidator, false);
 var mailField = tagForm.elements.mail;
 mailField.addEventListener("blur", textFieldValidator, false);
 var articleField = tagForm.elements.article;
-articleField.addEventListener("blur", textFieldValidator, false);
+articleField.addEventListener("blur", textAreaValidator, false);
 
-var radioGroup = document.getElementsByName("radiogr")[0];
-console.log(radioGroup);
-radioGroup.addEventListener("click", radioAndCheckValidator, false);
+var radioDiv = document.querySelector("#RGroup");
+radioDiv.addEventListener("click", radioValid, false);
+
+var checkBx = document.querySelector(".chkBx");
+checkBx.addEventListener("click", chckBxValid, false);
+
+var selectBox = document.getElementsByName("rubric")[0];
+selectBox.addEventListener("change", selValid, false);
 
 var submitBtn = tagForm.elements.submitbutton;
 submitBtn.addEventListener("click", allFormValid, false);

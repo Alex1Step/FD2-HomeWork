@@ -42,12 +42,13 @@
           <tr>
             <td>Рубрика каталога:</td>
             <td style="padding-left: 1px">
-              <div>
+              <div id="combicDiv" tabindex="0">
                 <select name="rubric" style="width: 204px; margin-left: 2px">
-                  <option value="1" selected="">домашний уют</option>
-                  <option value="2">здоровье</option>
-                  <option value="3"></option>
-                  <option value="4">бытовая техника</option>
+                  <option class="option" value="1" selected="">
+                    домашний уют
+                  </option>
+                  <option class="option" value="2">здоровье</option>
+                  <option class="option" value="3">бытовая техника</option>
                 </select>
               </div>
             </td>
@@ -55,7 +56,7 @@
           <tr>
             <td>Размещение:</td>
             <td style="padding: 2px 0 2px 0">
-              <div id="RGroup">
+              <div id="RGroup" tabindex="0">
                 <input type="radio" class="rad" name="public" value="1" /><span
                   class="SRadio8a"
                   >бесплатное</span
@@ -74,7 +75,7 @@
           <tr>
             <td style="padding: 2px 0 3px 3px">Разрешить&nbsp;отзывы:</td>
             <td>
-              <div id="chckB">
+              <div id="chckB" tabindex="0">
                 <input type="checkbox" class="chkBx" name="comments" />
               </div>
             </td>

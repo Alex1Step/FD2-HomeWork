@@ -1,5 +1,7 @@
 "use strict";
 
+var combicWasChanghed = false;
+
 function emptyField(EO) {
   if (!EO.target.nextSibling) {
     var errElement = document.createElement("span");
@@ -110,12 +112,16 @@ function textAreaValidator(EO) {
       '<font color="red">   Вы не ввели значение</font>';
     return false;
   }
-  if (EO.target.nextSibling) EO.target.nextSibling.remove();
+  var textAParent = EO.target.parentNode;
+  if (textAParent.lastChild.id === "error") textAParent.lastChild.remove();
   return true;
 }
 
 //валидация всех полей по нажатию кнопки "Опубликовать"
 function allFormValid(EO) {
+  //очистка сообщений валидации combobox
+  var combicParent = document.querySelector("#combicDiv");
+  if (combicParent.lastChild.id === "error") combicParent.lastChild.remove();
   //очистка сообщений валидации radio input
   var radioParent = document.querySelector("#RGroup");
   if (radioParent.lastChild.id === "error") radioParent.lastChild.remove();
@@ -162,6 +168,14 @@ function allFormValid(EO) {
     errChck.innerHTML = '<font color="red">   Вы не разрешили отзывы</font>';
     document.getElementById("chckB").appendChild(errChck);
   }
+  //валидация combobox
+  if (combicWasChanghed === false) {
+    var errCombi = document.createElement("span");
+    errCombi.setAttribute("id", "error");
+    errCombi.innerHTML =
+      '<font color="red">   Вы не изменяли "Рубрику каталога"</font>';
+    document.getElementById("combicDiv").appendChild(errCombi);
+  }
 
   if (document.getElementById("error")) {
     //при наличии хотябы одной ошибки - отмена стандартного поведения браузера
@@ -194,21 +208,9 @@ function chckBxValid(EO) {
 }
 //если в combobox`e выбрали пустое значение
 function selValid(EO) {
-  var EO = EO || window.event;
-  if (EO.target.childNodes[5].selected === true) {
-    var parN = EO.target.parentNode;
-    if (!(parN.lastChild.id === "error")) {
-      var errElement = document.createElement("span");
-      errElement.setAttribute("id", "error");
-      errElement.innerHTML =
-        '<font color="red">   Пожалуйста, выберите рубрику католога</font>';
-      var par = EO.target.parentNode;
-      par.appendChild(errElement);
-      return false;
-    }
-  }
-  if (EO.target.nextSibling) EO.target.nextSibling.remove();
-  return true;
+  combicWasChanghed = true;
+  var combicParent = document.querySelector("#combicDiv");
+  if (combicParent.lastChild.id === "error") combicParent.lastChild.remove();
 }
 
 var tagForm = document.forms.validForm;
@@ -235,7 +237,7 @@ var checkBx = document.querySelector(".chkBx");
 checkBx.addEventListener("click", chckBxValid, false);
 
 var selectBox = document.getElementsByName("rubric")[0];
-selectBox.addEventListener("change", selValid, false);
+selectBox.addEventListener("click", selValid, false);
 
 var submitBtn = tagForm.elements.submitbutton;
 submitBtn.addEventListener("click", allFormValid, false);

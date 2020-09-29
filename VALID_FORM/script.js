@@ -183,7 +183,8 @@ function allFormValid(EO) {
     //и перемещение фокуса к первому полю с ошибкой
     var errorSpan = document.getElementById("error");
     var errorParent = errorSpan.parentNode;
-    errorParent.firstChild.focus();
+    var errFirstChild = errorParent.firstChild;
+    errFirstChild.focus();
   }
 }
 

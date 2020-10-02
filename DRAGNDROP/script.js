@@ -1,6 +1,8 @@
 "use strict";
 
-window.addEventListener("DOMContentLoaded", documentReady, false);
+var zIndexCount = 1;
+
+window.addEventListener("load", documentReady, false);
 
 function documentReady() {
   var dragArea = document.getElementById("DRnDRarea");
@@ -9,7 +11,6 @@ function documentReady() {
     // для каждого элемента: даём position:absolute и позиционируем в координаты
     var posTop = allImg[i].offsetTop;
     var posLeft = allImg[i].offsetLeft;
-    console.log(posTop + "   " + posLeft);
     allImg[i].style.top = posTop + "px";
     allImg[i].style.left = posLeft + "px";
     //подписываемся на событие нажатия левой клавиши мыши
@@ -26,12 +27,12 @@ function mdF(EO) {
   EO.preventDefault();
   EO.target.style.cursor = "move";
   EO.target.style.position = "absolute";
-  EO.target.style.zIndex = 10;
+  EO.target.style.zIndex = zIndexCount;
   var relPosX = EO.clientX - EO.target.getBoundingClientRect().left;
   var relPosY = EO.clientY - EO.target.getBoundingClientRect().top;
 
   //прослушиваем события движения мыши и отпускания клавиши мыши
-  EO.target.addEventListener("mousemove", mmF, false);
+  document.addEventListener("mousemove", mmF, false);
   EO.target.addEventListener("mouseup", muF, false);
 
   //обработка отпускания левой клавиши мыши
@@ -39,8 +40,9 @@ function mdF(EO) {
     var EO = EO || window.event;
     EO.preventDefault();
     EO.target.style.position = "absolute";
-    EO.target.style.zIndex = 0;
-    EO.target.removeEventListener("mousemove", mmF);
+    EO.target.style.zIndex = zIndexCount;
+    zIndexCount += 1;
+    document.removeEventListener("mousemove", mmF);
     EO.target.removeEventListener("mouseup", muF);
   }
 

@@ -45,14 +45,20 @@ function mdF(EO) {
     console.log(
       "ширина document" +
         document.documentElement.clientWidth +
-        "высота document" +
+        "   высота document" +
         document.documentElement.clientHeight
     );
     console.log(
       "ширина body" +
         document.body.clientWidth +
-        "высота body" +
+        "   высота body" +
         document.body.clientHeight
+    );
+    console.log(
+      "ширина window" +
+        window.innerWidth +
+        "   высота window" +
+        window.innerHeight
     );
     document.removeEventListener("mousemove", mmF);
     EO.target.removeEventListener("mouseup", muF);

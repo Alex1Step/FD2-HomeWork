@@ -32,7 +32,7 @@ function mdF(EO) {
   var relPosY = EO.clientY - EO.target.getBoundingClientRect().top;
 
   //прослушиваем события движения мыши и отпускания клавиши мыши
-  EO.target.addEventListener("mousemove", mmF, false);
+  document.addEventListener("mousemove", mmF, false);
   EO.target.addEventListener("mouseup", muF, false);
 
   //обработка отпускания левой клавиши мыши
@@ -42,30 +42,42 @@ function mdF(EO) {
     EO.target.style.position = "absolute";
     EO.target.style.zIndex = zIndexCount;
     zIndexCount += 1;
-    EO.target.removeEventListener("mousemove", mmF);
+    console.log(
+      "ширина document" +
+        document.documentElement.clientWidth +
+        "высота document" +
+        document.documentElement.clientHeight
+    );
+    console.log(
+      "ширина body" +
+        document.body.clientWidth +
+        "высота body" +
+        document.body.clientHeight
+    );
+    document.removeEventListener("mousemove", mmF);
     EO.target.removeEventListener("mouseup", muF);
-    EO.target.removeEventListener("mouseout", moF, false);
+    // EO.target.removeEventListener("mouseout", moF, false);
   }
 
   //обработка резкого рывка и потери объекта
-  function moF(EO) {
-    var EO = EO || window.event;
-    EO.preventDefault();
-    EO.target.removeEventListener("mousemove", mmF);
-    setTimeout(() => {
-      function newCoord(EO) {
-        var EO = EO || window.event;
-        document.querySelector("#tempX").value = EO.pageX - 30;
-        document.querySelector("#tempY").value = EO.pageY - 30;
-      }
-      document.addEventListener("mousemove", newCoord, false);
-      EO.target.style.left = document.querySelector("#tempX").value + "px";
-      EO.target.style.top = document.querySelector("#tempY").value + "px";
-      EO.target.style.position = "absolute";
-      EO.target.addEventListener("mousemove", mmF, false);
-      EO.target.removeEventListener("mouseout", moF, false);
-    }, 200);
-  }
+  // function moF(EO) {
+  //   var EO = EO || window.event;
+  //   EO.preventDefault();
+  //   EO.target.removeEventListener("mousemove", mmF);
+  //   setTimeout(() => {
+  //     function newCoord(EO) {
+  //       var EO = EO || window.event;
+  //       document.querySelector("#tempX").value = EO.pageX - 30;
+  //       document.querySelector("#tempY").value = EO.pageY - 30;
+  //     }
+  //     document.addEventListener("mousemove", newCoord, false);
+  //     EO.target.style.left = document.querySelector("#tempX").value + "px";
+  //     EO.target.style.top = document.querySelector("#tempY").value + "px";
+  //     EO.target.style.position = "absolute";
+  //     EO.target.addEventListener("mousemove", mmF, false);
+  //     EO.target.removeEventListener("mouseout", moF, false);
+  //   }, 200);
+  // }
 
   //обработка движения мыши с зажатой левой клавишей
   function mmF(EO) {
@@ -80,7 +92,7 @@ function mdF(EO) {
       var minLimitY = drndrArea.getBoundingClientRect().top / 2;
       var maxLimitX = drndrArea.getBoundingClientRect().right - minLimitX;
       var maxLimitY = drndrArea.getBoundingClientRect().bottom - minLimitY;
-      EO.target.addEventListener("mouseout", moF, false);
+      // EO.target.addEventListener("mouseout", moF, false);
       if (
         coordX > minLimitX &&
         coordX < maxLimitX - EO.target.offsetWidth &&

@@ -39,7 +39,7 @@ function mdF(EO) {
   function muF(EO) {
     var EO = EO || window.event;
     EO.preventDefault();
-    EO.target.style.position = "absolute";
+    // EO.target.style.position = "absolute";
     EO.target.style.zIndex = zIndexCount;
     zIndexCount += 1;
     console.log(

@@ -29,10 +29,9 @@ function mdF(EO) {
   EO.target.style.position = "absolute";
   EO.target.style.zIndex = zIndexCount;
   var globalTarget = EO.target; // !!!!! это переменная, которая запоминает, какой объект начал двигаться
-  //чтобы при потере его в mmF продолжать работать именно с ним, а не с тем на который он перешел, например body
+  //чтобы при потере его в mmF продолжать работать именно с ним, а не с тем на который перешел курсор, например body
   var relPosX = EO.clientX - EO.target.getBoundingClientRect().left;
   var relPosY = EO.clientY - EO.target.getBoundingClientRect().top;
-
   //прослушиваем события движения мыши и отпускания клавиши мыши
   document.addEventListener("mousemove", mmF, false);
   EO.target.addEventListener("mouseup", muF, false);
@@ -55,6 +54,7 @@ function mdF(EO) {
       EO.preventDefault();
       var coordX = EO.pageX - relPosX;
       var coordY = EO.pageY - relPosY;
+      // console.log(EO.pageX + " - " + relPosX + " = " + coordX);
       var drndrArea = document.getElementById("DRnDRarea");
       var minLimitX = drndrArea.getBoundingClientRect().left / 2;
       var minLimitY = drndrArea.getBoundingClientRect().top / 2;

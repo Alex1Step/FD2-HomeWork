@@ -25,6 +25,7 @@ function documentReady() {
 function mdF(EO) {
   var EO = EO || window.event;
   EO.preventDefault();
+  console.log(EO);
   EO.target.style.cursor = "move";
   EO.target.style.position = "absolute";
   EO.target.style.zIndex = zIndexCount;
@@ -66,8 +67,10 @@ function mdF(EO) {
         coordY > minLimitY &&
         coordY < maxLimitY - globalTarget.offsetHeight
       ) {
-        globalTarget.style.left = coordX + "px"; //продолжаем работать именно с перетаскиваемым объектом
-        globalTarget.style.top = coordY + "px"; //продолжаем работать именно с перетаскиваемым объектом
+        globalTarget.style.left =
+          coordX - globalTarget.parentNode.getBoundingClientRect().left + "px"; //продолжаем работать именно с перетаскиваемым объектом
+        globalTarget.style.top =
+          coordY - globalTarget.parentNode.getBoundingClientRect().top + "px"; //продолжаем работать именно с перетаскиваемым объектом
       }
     } else return false;
   }

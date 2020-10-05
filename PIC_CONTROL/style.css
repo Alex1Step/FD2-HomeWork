@@ -1,0 +1,21 @@
+.rotate {
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  border-radius: 50%;
+  background-color: darkblue;
+}
+
+.resize {
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  background-color: crimson;
+}
+
+#PICcontrol {
+  background-color: chartreuse;
+  width: 200px;
+  height: 250px;
+  position: absolute;
+}

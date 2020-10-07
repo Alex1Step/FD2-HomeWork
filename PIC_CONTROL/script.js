@@ -5,48 +5,54 @@ window.addEventListener("load", documentReady, false);
 function documentReady() {
   var mainElem = document.getElementById("PICcontrol");
   mainElem.style.position = "absolute";
-  mainElem.style.left = "500px";
-  mainElem.style.top = "150px";
+  mainElem.style.left = "30%";
+  mainElem.style.top = "30%";
+  //ищем элементы управления и вешаем на них обработчики
   var res1 = document.getElementById("1");
-  res1.style.top = "0px";
-  res1.style.left = mainElem.offsetWidth / 2 - res1.offsetWidth / 2 + "px";
+  res1.style.top = "0%";
+  res1.style.left = "50%";
+  res1.addEventListener("mousedown", mdResizeFunc, false);
   res1.addEventListener("mousemove", changeCursor, false);
-  res1.addEventListener("mousedown", resizeFunc, false);
   var res2 = document.getElementById("2");
-  res2.style.top = mainElem.offsetHeight / 2 - res2.offsetHeight / 2 + "px";
-  res2.style.left = "0px";
-  res2.addEventListener("mousedown", resizeFunc, false);
+  res2.style.top = "50%";
+  res2.style.left = "0%";
+  res2.addEventListener("mousedown", mdResizeFunc, false);
   res2.addEventListener("mousemove", changeCursor, false);
   var res3 = document.getElementById("3");
-  res3.style.bottom = "0px";
-  res3.style.right = mainElem.offsetWidth / 2 - res3.offsetWidth / 2 + "px";
-  res3.addEventListener("mousedown", resizeFunc, false);
+  res3.style.bottom = "0%";
+  res3.style.right = "50%";
+  res3.addEventListener("mousedown", mdResizeFunc, false);
   res3.addEventListener("mousemove", changeCursor, false);
   var res4 = document.getElementById("4");
-  res4.style.bottom = mainElem.offsetHeight / 2 - res4.offsetHeight / 2 + "px";
-  res4.style.right = "0px";
-  res4.addEventListener("mousedown", resizeFunc, false);
+  res4.style.bottom = "50%";
+  res4.style.right = "0%";
+  res4.addEventListener("mousedown", mdResizeFunc, false);
   res4.addEventListener("mousemove", changeCursor, false);
   var rot1 = document.getElementById("5");
-  rot1.style.top = "0px";
-  rot1.style.left = "0px";
+  rot1.style.top = "0%";
+  rot1.style.left = "0%";
+  rot1.addEventListener("mousedown", mdResizeFunc, false);
   rot1.addEventListener("mousemove", changeCursor, false);
   var rot2 = document.getElementById("6");
-  rot2.style.bottom = "0px";
-  rot2.style.left = "0px";
+  rot2.style.bottom = "0%";
+  rot2.style.left = "0%";
+  rot2.addEventListener("mousedown", mdResizeFunc, false);
   rot2.addEventListener("mousemove", changeCursor, false);
   var rot3 = document.getElementById("7");
-  rot3.style.bottom = "0px";
-  rot3.style.right = "0px";
+  rot3.style.bottom = "0%";
+  rot3.style.right = "0%";
+  rot3.addEventListener("mousedown", mdResizeFunc, false);
   rot3.addEventListener("mousemove", changeCursor, false);
   var rot4 = document.getElementById("8");
-  rot4.style.top = "0px";
-  rot4.style.right = "0px";
+  rot4.style.top = "0%";
+  rot4.style.right = "0%";
+  rot4.addEventListener("mousedown", mdResizeFunc, false);
   rot4.addEventListener("mousemove", changeCursor, false);
+
   mainElem.addEventListener("mousedown", mdF, false);
 }
 
-//перемещение объекта
+//обработка перемещение объекта как в предыдущем задании
 function mdF(EO) {
   var EO = EO || window.event;
   EO.preventDefault();
@@ -110,7 +116,133 @@ function changeCursor(EO) {
   EO.target.style.cursor = cursorHash[EO.target.id];
 }
 
-function resizeFunc(EO) {
+function mdResizeFunc(EO) {
   var EO = EO || window.event;
   EO.preventDefault();
+  var targetDiv = EO.target.parentNode;
+  // console.log(targetDiv);
+  var targetObj = EO.target;
+  var startPosX = EO.clientX;
+  var startPosY = EO.clientY;
+
+  document.addEventListener("mousemove", mmResizeFunc, false);
+  document.addEventListener("mouseup", muResizeFunc, false);
+
+  function muResizeFunc(EO) {
+    var EO = EO || window.event;
+    EO.preventDefault();
+    var w = targetDiv.getBoundingClientRect().width;
+    var h = targetDiv.getBoundingClientRect().height;
+    var t =
+      targetDiv.getBoundingClientRect().top -
+      targetDiv.parentNode.getBoundingClientRect().top;
+    var l =
+      targetDiv.getBoundingClientRect().left -
+      targetDiv.parentNode.getBoundingClientRect().left;
+    console.log(targetDiv.style);
+    targetDiv.style = null;
+    console.log(targetDiv.style);
+    targetDiv.style.position = "absolute";
+    targetDiv.style.width = w + "px";
+    targetDiv.style.height = h + "px";
+    targetDiv.style.top = t + "px";
+    targetDiv.style.left = l + "px";
+    document.removeEventListener("mousemove", mmResizeFunc);
+    EO.target.removeEventListener("mouseup", muResizeFunc);
+  }
+
+  function mmResizeFunc(EO) {
+    if (EO.which === 1) {
+      var EO = EO || window.event;
+      EO.preventDefault();
+      var currentPosX = EO.clientX;
+      var currentPosY = EO.clientY;
+      switch (targetObj.id) {
+        case "1": {
+          var resizeValue = startPosY - currentPosY;
+          targetDiv.style.transformOrigin = "50% 100%";
+          var newScale =
+            (targetDiv.offsetHeight + resizeValue) / targetDiv.offsetHeight;
+          targetDiv.style.transform = "scaleY(" + newScale + ")";
+          break;
+        }
+        case "2": {
+          var resizeValue = startPosX - currentPosX;
+          targetDiv.style.transformOrigin = "100% 50%";
+          var newScale =
+            (targetDiv.offsetWidth + resizeValue) / targetDiv.offsetWidth;
+          targetDiv.style.transform = "scaleX(" + newScale + ")";
+          break;
+        }
+        case "3": {
+          var resizeValue = startPosY - currentPosY;
+          targetDiv.style.transformOrigin = "50% 0%";
+          var newScale =
+            (targetDiv.offsetHeight - resizeValue) / targetDiv.offsetHeight;
+          targetDiv.style.transform = "scaleY(" + newScale + ")";
+          break;
+        }
+        case "4": {
+          var resizeValue = startPosX - currentPosX;
+          targetDiv.style.transformOrigin = "0% 50%";
+          var newScale =
+            (targetDiv.offsetWidth - resizeValue) / targetDiv.offsetWidth;
+          targetDiv.style.transform = "scaleX(" + newScale + ")";
+          break;
+        }
+        case "5": {
+          if (
+            Math.abs(startPosX - currentPosX) >
+            Math.abs(startPosY - currentPosY)
+          )
+            var resizeValue = startPosX - currentPosX;
+          else resizeValue = startPosY - currentPosY;
+          targetDiv.style.transformOrigin = "100% 100%";
+          var newScale =
+            (targetDiv.offsetWidth + resizeValue) / targetDiv.offsetWidth;
+          targetDiv.style.transform = "scale(" + newScale + ")";
+          break;
+        }
+        case "6": {
+          if (
+            Math.abs(startPosX + currentPosX) >
+            Math.abs(startPosY - currentPosY)
+          )
+            var resizeValue = startPosX - currentPosX;
+          else resizeValue = startPosY - currentPosY;
+          targetDiv.style.transformOrigin = "100% 0%";
+          var newScale =
+            (targetDiv.offsetWidth + resizeValue) / targetDiv.offsetWidth;
+          targetDiv.style.transform = "scale(" + newScale + ")";
+          break;
+        }
+        case "7": {
+          if (
+            Math.abs(startPosX + currentPosX) >
+            Math.abs(startPosY - currentPosY)
+          )
+            var resizeValue = startPosX - currentPosX;
+          else resizeValue = startPosY - currentPosY;
+          targetDiv.style.transformOrigin = "0% 0%";
+          var newScale =
+            (targetDiv.offsetWidth - resizeValue) / targetDiv.offsetWidth;
+          targetDiv.style.transform = "scale(" + newScale + ")";
+          break;
+        }
+        case "8": {
+          if (
+            Math.abs(startPosX + currentPosX) >
+            Math.abs(startPosY - currentPosY)
+          )
+            var resizeValue = startPosX - currentPosX;
+          else resizeValue = startPosY - currentPosY;
+          targetDiv.style.transformOrigin = "0% 100%";
+          var newScale =
+            (targetDiv.offsetWidth - resizeValue) / targetDiv.offsetWidth;
+          targetDiv.style.transform = "scale(" + newScale + ")";
+          break;
+        }
+      }
+    } else return false;
+  }
 }

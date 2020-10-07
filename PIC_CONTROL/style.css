@@ -19,3 +19,7 @@
   height: 250px;
   position: absolute;
 }
+
+body {
+  margin: 0px;
+}

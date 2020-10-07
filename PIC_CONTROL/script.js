@@ -99,7 +99,7 @@ function mdF(EO) {
     }
   }
 }
-
+//изменение курсора при наведении на элемент управления
 function changeCursor(EO) {
   var EO = EO || window.event;
   EO.preventDefault();
@@ -115,12 +115,11 @@ function changeCursor(EO) {
   };
   EO.target.style.cursor = cursorHash[EO.target.id];
 }
-
+//обработка событий элементов управления
 function mdResizeFunc(EO) {
   var EO = EO || window.event;
   EO.preventDefault();
   var targetDiv = EO.target.parentNode;
-  // console.log(targetDiv);
   var targetObj = EO.target;
   var startPosX = EO.clientX;
   var startPosY = EO.clientY;
@@ -158,6 +157,7 @@ function mdResizeFunc(EO) {
       var currentPosX = EO.clientX;
       var currentPosY = EO.clientY;
       switch (targetObj.id) {
+        //изменение размеров по ширине и высоте отдельно
         case "1": {
           var resizeValue = startPosY - currentPosY;
           targetDiv.style.transformOrigin = "50% 100%";
@@ -190,6 +190,7 @@ function mdResizeFunc(EO) {
           targetDiv.style.transform = "scaleX(" + newScale + ")";
           break;
         }
+        //изменение размеров при помощи угловых элем. управления
         case "5": {
           if (
             Math.abs(startPosX - currentPosX) >

@@ -14,10 +14,12 @@
 }
 
 #PICcontrol {
-  background-color: chartreuse;
-  width: 200px;
-  height: 250px;
+  border: 1px solid;
+  border-color: black;
+  width: 300px;
+  height: 300px;
   position: absolute;
+  background: url(pic/h2o.jpg) no-repeat;
 }
 
 body {

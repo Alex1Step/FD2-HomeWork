@@ -5,8 +5,8 @@ window.addEventListener("load", documentReady, false);
 function documentReady() {
   var mainElem = document.getElementById("PICcontrol");
   mainElem.style.position = "absolute";
-  mainElem.style.left = "30%";
-  mainElem.style.top = "30%";
+  mainElem.style.left = "10%";
+  mainElem.style.top = "10%";
   //ищем элементы управления и вешаем на них обработчики
   var res1 = document.getElementById("1");
   res1.style.top = "0%";
@@ -19,13 +19,14 @@ function documentReady() {
   res2.addEventListener("mousedown", mdResizeFunc, false);
   res2.addEventListener("mousemove", changeCursor, false);
   var res3 = document.getElementById("3");
-  res3.style.bottom = "0%";
-  res3.style.right = "50%";
+  res3.style.top =
+    100 - 100 * (res3.offsetHeight / mainElem.offsetHeight) + "%";
+  res3.style.left = "50%";
   res3.addEventListener("mousedown", mdResizeFunc, false);
   res3.addEventListener("mousemove", changeCursor, false);
   var res4 = document.getElementById("4");
-  res4.style.bottom = "50%";
-  res4.style.right = "0%";
+  res4.style.top = "50%";
+  res4.style.left = 100 - 100 * (res4.offsetWidth / mainElem.offsetWidth) + "%";
   res4.addEventListener("mousedown", mdResizeFunc, false);
   res4.addEventListener("mousemove", changeCursor, false);
   var rot1 = document.getElementById("5");
@@ -138,16 +139,23 @@ function mdResizeFunc(EO) {
     var l =
       targetDiv.getBoundingClientRect().left -
       targetDiv.parentNode.getBoundingClientRect().left;
-    console.log(targetDiv.style);
     targetDiv.style = null;
-    console.log(targetDiv.style);
     targetDiv.style.position = "absolute";
     targetDiv.style.width = w + "px";
     targetDiv.style.height = h + "px";
     targetDiv.style.top = t + "px";
     targetDiv.style.left = l + "px";
+    document.getElementById("3").style.top =
+      100 -
+      100 *
+        (document.getElementById("3").offsetHeight / targetDiv.offsetHeight) +
+      "%";
+    document.getElementById("4").style.left =
+      100 -
+      100 * (document.getElementById("4").offsetWidth / targetDiv.offsetWidth) +
+      "%";
     document.removeEventListener("mousemove", mmResizeFunc);
-    EO.target.removeEventListener("mouseup", muResizeFunc);
+    document.removeEventListener("mouseup", muResizeFunc);
   }
 
   function mmResizeFunc(EO) {

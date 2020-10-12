@@ -6,6 +6,8 @@ var angle = (30 / 180) * Math.PI; //градусов в одном часу
 var secNminAngle = 360 / 60; //градусов в одном шаге секундной и минутной стреллки
 var hAngle = 360 / 12; // градусов в одном шаге часовой стреллки
 
+var startTime = new Date();
+
 //создаём базу часов
 var baseClock = document.createElement("div");
 baseClock.style.position = "relative";
@@ -18,7 +20,12 @@ document.body.appendChild(baseClock);
 //создаём цифровые часы
 var stringClock = document.createElement("span");
 stringClock.setAttribute("id", "digital");
-stringClock.innerHTML = "__:__:__";
+stringClock.innerHTML =
+  str0l(startTime.getHours(), 2) +
+  ":" +
+  str0l(startTime.getMinutes(), 2) +
+  ":" +
+  str0l(startTime.getSeconds(), 2);
 stringClock.style.position = "absolute";
 baseClock.appendChild(stringClock);
 stringClock.style.left =
@@ -57,27 +64,6 @@ for (var i = 1; i <= 12; i++) {
 }
 
 //создаём стрелки
-//часовая
-var hourArrow = document.createElement("div");
-hourArrow.setAttribute("id", "hour");
-hourArrow.style.position = "absolute";
-hourArrow.style.background = "black";
-hourArrow.style.width = diamBase / 30 + "px"; //линейные размеры
-hourArrow.style.height = diamBase / 3.2 + "px"; //линейные размеры
-hourArrow.style.borderRadius = hourArrow.style.height;
-baseClock.appendChild(hourArrow);
-hourArrow.style.left =
-  baseClock.offsetLeft +
-  baseClock.offsetWidth / 2 -
-  baseClock.getBoundingClientRect().left -
-  hourArrow.offsetWidth / 2 +
-  "px";
-hourArrow.style.top =
-  baseClock.offsetTop +
-  baseClock.offsetHeight / 2 -
-  baseClock.getBoundingClientRect().top -
-  hourArrow.offsetHeight +
-  "px";
 
 //минутная
 var minuteArrow = document.createElement("div");
@@ -100,6 +86,36 @@ minuteArrow.style.top =
   baseClock.getBoundingClientRect().top -
   minuteArrow.offsetHeight +
   "px";
+var startA2 = secNminAngle * startTime.getMinutes();
+minuteArrow.style.transformOrigin =
+  minuteArrow.offsetWidth / 2 + "px " + minuteArrow.offsetHeight + "px";
+minuteArrow.style.transform = "rotate(" + startA2 + "deg)";
+
+//часовая
+var hourArrow = document.createElement("div");
+hourArrow.setAttribute("id", "hour");
+hourArrow.style.position = "absolute";
+hourArrow.style.background = "black";
+hourArrow.style.width = diamBase / 30 + "px"; //линейные размеры
+hourArrow.style.height = diamBase / 3.2 + "px"; //линейные размеры
+hourArrow.style.borderRadius = hourArrow.style.height;
+baseClock.appendChild(hourArrow);
+hourArrow.style.left =
+  baseClock.offsetLeft +
+  baseClock.offsetWidth / 2 -
+  baseClock.getBoundingClientRect().left -
+  hourArrow.offsetWidth / 2 +
+  "px";
+hourArrow.style.top =
+  baseClock.offsetTop +
+  baseClock.offsetHeight / 2 -
+  baseClock.getBoundingClientRect().top -
+  hourArrow.offsetHeight +
+  "px";
+var startA3 = hAngle * startTime.getHours() + hAngle * (startA2 / 360);
+hourArrow.style.transformOrigin =
+  hourArrow.offsetWidth / 2 + "px " + hourArrow.offsetHeight + "px";
+hourArrow.style.transform = "rotate(" + startA3 + "deg)";
 
 //секундная
 var secondArrow = document.createElement("div");
@@ -122,6 +138,10 @@ secondArrow.style.top =
   baseClock.getBoundingClientRect().top -
   secondArrow.offsetHeight +
   "px";
+var startA1 = secNminAngle * startTime.getSeconds();
+secondArrow.style.transformOrigin =
+  secondArrow.offsetWidth / 2 + "px " + secondArrow.offsetHeight + "px";
+secondArrow.style.transform = "rotate(" + startA1 + "deg)";
 //дополнение нулями
 function str0l(val, len) {
   var strVal = val.toString();

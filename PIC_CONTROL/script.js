@@ -121,6 +121,12 @@ function mdResizeFunc(EO) {
   var EO = EO || window.event;
   EO.preventDefault();
   var targetDiv = EO.target.parentNode;
+  var tDleft = EO.target.parentNode.getBoundingClientRect().left;
+  var tDrigth = EO.target.parentNode.getBoundingClientRect().right;
+  var tDtop = EO.target.parentNode.getBoundingClientRect().top;
+  var tDbottom = EO.target.parentNode.getBoundingClientRect().bottom;
+  var tDheight = EO.target.parentNode.getBoundingClientRect().height;
+  var tDwidth = EO.target.parentNode.getBoundingClientRect().width;
   var targetObj = EO.target;
   var startPosX = EO.clientX;
   var startPosY = EO.clientY;
@@ -131,20 +137,20 @@ function mdResizeFunc(EO) {
   function muResizeFunc(EO) {
     var EO = EO || window.event;
     EO.preventDefault();
-    var w = targetDiv.getBoundingClientRect().width;
-    var h = targetDiv.getBoundingClientRect().height;
-    var t =
-      targetDiv.getBoundingClientRect().top -
-      targetDiv.parentNode.getBoundingClientRect().top;
-    var l =
-      targetDiv.getBoundingClientRect().left -
-      targetDiv.parentNode.getBoundingClientRect().left;
-    targetDiv.style = null;
-    targetDiv.style.position = "absolute";
-    targetDiv.style.width = w + "px";
-    targetDiv.style.height = h + "px";
-    targetDiv.style.top = t + "px";
-    targetDiv.style.left = l + "px";
+    // var w = targetDiv.getBoundingClientRect().width;
+    // var h = targetDiv.getBoundingClientRect().height;
+    // var t =
+    //   targetDiv.getBoundingClientRect().top -
+    //   targetDiv.parentNode.getBoundingClientRect().top;
+    // var l =
+    //   targetDiv.getBoundingClientRect().left -
+    //   targetDiv.parentNode.getBoundingClientRect().left;
+    // targetDiv.style = null;
+    // targetDiv.style.position = "absolute";
+    // targetDiv.style.width = w + "px";
+    // targetDiv.style.height = h + "px";
+    // targetDiv.style.top = t + "px";
+    // targetDiv.style.left = l + "px";
     document.getElementById("3").style.top =
       100 -
       100 *
@@ -167,88 +173,74 @@ function mdResizeFunc(EO) {
       switch (targetObj.id) {
         //изменение размеров по ширине и высоте отдельно
         case "1": {
-          var resizeValue = startPosY - currentPosY;
-          targetDiv.style.transformOrigin = "50% 100%";
-          var newScale =
-            (targetDiv.offsetHeight + resizeValue) / targetDiv.offsetHeight;
-          targetDiv.style.transform = "scaleY(" + newScale + ")";
+          var resizeValue = currentPosY - startPosY;
+          targetDiv.style.height = tDheight - resizeValue + "px";
+          targetDiv.style.bottom = tDbottom + "px";  //фиксация грани на противоположной действию стороне
           break;
         }
         case "2": {
-          var resizeValue = startPosX - currentPosX;
-          targetDiv.style.transformOrigin = "100% 50%";
-          var newScale =
-            (targetDiv.offsetWidth + resizeValue) / targetDiv.offsetWidth;
-          targetDiv.style.transform = "scaleX(" + newScale + ")";
+          var resizeValue = currentPosX - startPosX;
+          targetDiv.style.width = tDwidth - resizeValue + "px";
+          targetDiv.style.right = tDrigth + "px"; //фиксация грани на противоположной действию стороне
           break;
         }
-        case "3": {
-          var resizeValue = startPosY - currentPosY;
-          targetDiv.style.transformOrigin = "50% 0%";
-          var newScale =
-            (targetDiv.offsetHeight - resizeValue) / targetDiv.offsetHeight;
-          targetDiv.style.transform = "scaleY(" + newScale + ")";
+        case "3": {  //OK
+          var resizeValue = currentPosY - startPosY;
+          targetDiv.style.height = tDheight + resizeValue + "px";
           break;
         }
-        case "4": {
-          var resizeValue = startPosX - currentPosX;
-          targetDiv.style.transformOrigin = "0% 50%";
-          var newScale =
-            (targetDiv.offsetWidth - resizeValue) / targetDiv.offsetWidth;
-          targetDiv.style.transform = "scaleX(" + newScale + ")";
+        case "4": {  //OK
+          var resizeValue = currentPosX - startPosX;
+          targetDiv.style.width = tDwidth + resizeValue + "px";
           break;
         }
         //изменение размеров при помощи угловых элем. управления
-        case "5": {
-          if (
-            Math.abs(startPosX - currentPosX) >
-            Math.abs(startPosY - currentPosY)
-          )
-            var resizeValue = startPosX - currentPosX;
-          else resizeValue = startPosY - currentPosY;
-          targetDiv.style.transformOrigin = "100% 100%";
-          var newScale =
-            (targetDiv.offsetWidth + resizeValue) / targetDiv.offsetWidth;
-          targetDiv.style.transform = "scale(" + newScale + ")";
-          break;
-        }
-        case "6": {
+        case "5": {  //not OK
           if (
             Math.abs(startPosX + currentPosX) >
             Math.abs(startPosY - currentPosY)
           )
-            var resizeValue = startPosX - currentPosX;
-          else resizeValue = startPosY - currentPosY;
-          targetDiv.style.transformOrigin = "100% 0%";
-          var newScale =
-            (targetDiv.offsetWidth + resizeValue) / targetDiv.offsetWidth;
-          targetDiv.style.transform = "scale(" + newScale + ")";
+            var resizeValue = currentPosX - startPosX;
+          else resizeValue = currentPosY - startPosY;
+          targetDiv.style.height = tDheight - resizeValue + "px";
+          targetDiv.style.width = tDwidth - resizeValue + "px";
+          targetDiv.style.bottom = tDbottom + "px";   //фиксация точки на противоположном действию углу
+          targetDiv.style.right = tDrigth + "px";     //фиксация точки на противоположном действию углу
           break;
         }
-        case "7": {
+        case "6": {   //not OK
           if (
             Math.abs(startPosX + currentPosX) >
             Math.abs(startPosY - currentPosY)
           )
-            var resizeValue = startPosX - currentPosX;
-          else resizeValue = startPosY - currentPosY;
-          targetDiv.style.transformOrigin = "0% 0%";
-          var newScale =
-            (targetDiv.offsetWidth - resizeValue) / targetDiv.offsetWidth;
-          targetDiv.style.transform = "scale(" + newScale + ")";
+            var resizeValue = currentPosX - startPosX;
+          else resizeValue = currentPosY - startPosY;
+          targetDiv.style.height = tDheight - resizeValue + "px";
+          targetDiv.style.width = tDwidth - resizeValue + "px";
+          targetDiv.style.right = tDrigth + "px";   //фиксация точки на противоположном действию углу, top остаётся
           break;
         }
-        case "8": {
+        case "7": {  //OK
           if (
             Math.abs(startPosX + currentPosX) >
             Math.abs(startPosY - currentPosY)
           )
-            var resizeValue = startPosX - currentPosX;
-          else resizeValue = startPosY - currentPosY;
-          targetDiv.style.transformOrigin = "0% 100%";
-          var newScale =
-            (targetDiv.offsetWidth - resizeValue) / targetDiv.offsetWidth;
-          targetDiv.style.transform = "scale(" + newScale + ")";
+            var resizeValue = currentPosX - startPosX;
+          else resizeValue = currentPosY - startPosY;
+          targetDiv.style.height = tDheight + resizeValue + "px";
+          targetDiv.style.width = tDwidth + resizeValue + "px"; 
+          break;
+        }
+        case "8": {   //not OK
+          if (
+            Math.abs(startPosX + currentPosX) >
+            Math.abs(startPosY - currentPosY)
+          )
+            var resizeValue = currentPosX - startPosX;
+          else resizeValue = currentPosY - startPosY;
+          targetDiv.style.height = tDheight + resizeValue + "px";
+          targetDiv.style.width = tDwidth + resizeValue + "px";
+          targetDiv.style.bottom = tDbottom + "px"; //фиксация точки на противоположном действию углу, left остаётся
           break;
         }
       }

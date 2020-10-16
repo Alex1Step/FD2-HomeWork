@@ -121,12 +121,12 @@ function mdResizeFunc(EO) {
   var EO = EO || window.event;
   EO.preventDefault();
   var targetDiv = EO.target.parentNode;
-  var tDleft = EO.target.parentNode.getBoundingClientRect().left;
-  var tDrigth = EO.target.parentNode.getBoundingClientRect().right;
-  var tDtop = EO.target.parentNode.getBoundingClientRect().top;
+  var tDright = EO.target.parentNode.getBoundingClientRect().right;
   var tDbottom = EO.target.parentNode.getBoundingClientRect().bottom;
   var tDheight = EO.target.parentNode.getBoundingClientRect().height;
   var tDwidth = EO.target.parentNode.getBoundingClientRect().width;
+  var tDleft = EO.target.parentNode.getBoundingClientRect().left;
+  var tDtop = EO.target.parentNode.getBoundingClientRect().top;
   var targetObj = EO.target;
   var startPosX = EO.clientX;
   var startPosY = EO.clientY;
@@ -137,29 +137,6 @@ function mdResizeFunc(EO) {
   function muResizeFunc(EO) {
     var EO = EO || window.event;
     EO.preventDefault();
-    // var w = targetDiv.getBoundingClientRect().width;
-    // var h = targetDiv.getBoundingClientRect().height;
-    // var t =
-    //   targetDiv.getBoundingClientRect().top -
-    //   targetDiv.parentNode.getBoundingClientRect().top;
-    // var l =
-    //   targetDiv.getBoundingClientRect().left -
-    //   targetDiv.parentNode.getBoundingClientRect().left;
-    // targetDiv.style = null;
-    // targetDiv.style.position = "absolute";
-    // targetDiv.style.width = w + "px";
-    // targetDiv.style.height = h + "px";
-    // targetDiv.style.top = t + "px";
-    // targetDiv.style.left = l + "px";
-    document.getElementById("3").style.top =
-      100 -
-      100 *
-        (document.getElementById("3").offsetHeight / targetDiv.offsetHeight) +
-      "%";
-    document.getElementById("4").style.left =
-      100 -
-      100 * (document.getElementById("4").offsetWidth / targetDiv.offsetWidth) +
-      "%";
     document.removeEventListener("mousemove", mmResizeFunc);
     document.removeEventListener("mouseup", muResizeFunc);
   }
@@ -172,26 +149,32 @@ function mdResizeFunc(EO) {
       var currentPosY = EO.clientY;
       switch (targetObj.id) {
         //изменение размеров по ширине и высоте отдельно
-        case "1": {
+        case "1": { // OK
           var resizeValue = currentPosY - startPosY;
           targetDiv.style.height = tDheight - resizeValue + "px";
-          targetDiv.style.bottom = tDbottom + "px";  //фиксация грани на противоположной действию стороне
+          targetDiv.style.bottom = document.getElementById("DRnDRarea").getBoundingClientRect().bottom - tDbottom + "px";  //фиксация грани на противоположной действию стороне
+          targetDiv.style.top = "";
           break;
         }
         case "2": {
           var resizeValue = currentPosX - startPosX;
           targetDiv.style.width = tDwidth - resizeValue + "px";
-          targetDiv.style.right = tDrigth + "px"; //фиксация грани на противоположной действию стороне
+          targetDiv.style.left = "";
+          targetDiv.style.right = document.getElementById("DRnDRarea").getBoundingClientRect().right - tDright + "px"; //фиксация грани на противоположной действию стороне
           break;
         }
         case "3": {  //OK
           var resizeValue = currentPosY - startPosY;
           targetDiv.style.height = tDheight + resizeValue + "px";
+          targetDiv.style.left = tDleft + "px";
+          targetDiv.style.top = tDtop + "px";
           break;
         }
         case "4": {  //OK
           var resizeValue = currentPosX - startPosX;
           targetDiv.style.width = tDwidth + resizeValue + "px";
+          targetDiv.style.left = tDleft + "px";
+          targetDiv.style.top = tDtop + "px";
           break;
         }
         //изменение размеров при помощи угловых элем. управления
@@ -204,8 +187,10 @@ function mdResizeFunc(EO) {
           else resizeValue = currentPosY - startPosY;
           targetDiv.style.height = tDheight - resizeValue + "px";
           targetDiv.style.width = tDwidth - resizeValue + "px";
-          targetDiv.style.bottom = tDbottom + "px";   //фиксация точки на противоположном действию углу
-          targetDiv.style.right = tDrigth + "px";     //фиксация точки на противоположном действию углу
+          targetDiv.style.bottom = document.getElementById("DRnDRarea").getBoundingClientRect().bottom - tDbottom + "px";   //фиксация точки на противоположном действию углу
+          targetDiv.style.right = document.getElementById("DRnDRarea").getBoundingClientRect().right - tDright + "px";     //фиксация точки на противоположном действию углу
+          targetDiv.style.left = "";
+          targetDiv.style.top = "";
           break;
         }
         case "6": {   //not OK
@@ -217,7 +202,9 @@ function mdResizeFunc(EO) {
           else resizeValue = currentPosY - startPosY;
           targetDiv.style.height = tDheight - resizeValue + "px";
           targetDiv.style.width = tDwidth - resizeValue + "px";
-          targetDiv.style.right = tDrigth + "px";   //фиксация точки на противоположном действию углу, top остаётся
+          targetDiv.style.right = document.getElementById("DRnDRarea").getBoundingClientRect().right - tDright + "px";   //фиксация точки на противоположном действию углу, top остаётся
+          targetDiv.style.left = "";
+          targetDiv.style.top = tDtop + "px";
           break;
         }
         case "7": {  //OK
@@ -229,6 +216,8 @@ function mdResizeFunc(EO) {
           else resizeValue = currentPosY - startPosY;
           targetDiv.style.height = tDheight + resizeValue + "px";
           targetDiv.style.width = tDwidth + resizeValue + "px"; 
+          targetDiv.style.top = tDtop + "px";
+          targetDiv.style.left = tDleft + "px";
           break;
         }
         case "8": {   //not OK
@@ -240,10 +229,21 @@ function mdResizeFunc(EO) {
           else resizeValue = currentPosY - startPosY;
           targetDiv.style.height = tDheight + resizeValue + "px";
           targetDiv.style.width = tDwidth + resizeValue + "px";
-          targetDiv.style.bottom = tDbottom + "px"; //фиксация точки на противоположном действию углу, left остаётся
+          targetDiv.style.bottom = document.getElementById("DRnDRarea").getBoundingClientRect().bottom - tDbottom + "px"; //фиксация точки на противоположном действию углу, left остаётся
+          targetDiv.style.left = tDleft + "px";
+          targetDiv.style.top = "";
           break;
         }
       }
     } else return false;
+    document.getElementById("3").style.top =
+      100 -
+      100 *
+        (document.getElementById("3").offsetHeight / targetDiv.offsetHeight) +
+      "%";
+    document.getElementById("4").style.left =
+      100 -
+      100 * (document.getElementById("4").offsetWidth / targetDiv.offsetWidth) +
+      "%";
   }
 }

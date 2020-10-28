@@ -55,7 +55,7 @@ player1.style.top = playFloor.getBoundingClientRect().height/2 - player1.offsetH
 //РАКЕТКА 1
 var pl1={
     posY : playFloor.getBoundingClientRect().height/2 - player1.offsetHeight/2,
-    speedY: 5,
+    speedY: 0,
     update : function() {
         player1.style.top=this.posY+"px";
         }
@@ -73,7 +73,7 @@ player2.style.top = playFloor.getBoundingClientRect().height/2 - player2.offsetH
 //РАКЕТКА 2
 var pl2={
     posY : playFloor.getBoundingClientRect().height/2 - player2.offsetHeight/2,
-    speedY: 5,
+    speedY: 0,
     update : function() {
         player2.style.top=this.posY+"px";
         }
@@ -112,31 +112,46 @@ function startGame() {
     pl2.posY = playFloor.getBoundingClientRect().height/2 - player2.offsetHeight/2;
     //УПРАВЛЕНИЕ РАКЕТКАМИ ИГРОКОВ
     document.addEventListener('keydown', function(event) {
-        if (event.code == "KeyZ" && pl1.posY<(playFloor.getBoundingClientRect().height - player1.getBoundingClientRect().height)) {
-            pl1.posY += pl1.speedY;
-            if (pl1.posY>(playFloor.getBoundingClientRect().height - player1.getBoundingClientRect().height)) pl1.posY = playFloor.getBoundingClientRect().height - player1.getBoundingClientRect().height
+        if (event.code == "ControlLeft" && pl1.posY<(playFloor.getBoundingClientRect().height - player1.getBoundingClientRect().height)) {
+            pl1.speedY = 1;
         } 
-        else if (event.code == "KeyA" && pl1.posY>0) {
-            pl1.posY -= pl1.speedY;
-            if (pl1.posY<0) pl1.posY = 0;
+        else if (event.code == "ShiftLeft" && pl1.posY>0) {
+            pl1.speedY = -1;
         }
         if (event.code == "ArrowDown" && pl2.posY<(playFloor.getBoundingClientRect().height - player2.getBoundingClientRect().height)) {
-            pl2.posY += pl2.speedY;
-            if (pl2.posY>(playFloor.getBoundingClientRect().height - player2.getBoundingClientRect().height)) pl2.posY = playFloor.getBoundingClientRect().height - player1.getBoundingClientRect().height
+            pl2.speedY = 1;
         } 
         else if (event.code == "ArrowUp" && pl2.posY>0) {
-            pl2.posY -= pl2.speedY;
-            if (pl2.posY<0) pl2.posY = 0;
+            pl2.speedY = -1;
         }
-        pl1.update();
-        pl2.update();
     });
-    pl1.update();
-    pl2.update();
+
+    document.addEventListener('keyup', function(event) {
+        if (event.code == "ControlLeft" && pl1.posY<(playFloor.getBoundingClientRect().height - player1.getBoundingClientRect().height)) {
+            pl1.speedY = 0;
+        } 
+        else if (event.code == "ShiftLeft" && pl1.posY>0) {
+            pl1.speedY = 0;
+        }
+        if (event.code == "ArrowDown" && pl2.posY<(playFloor.getBoundingClientRect().height - player2.getBoundingClientRect().height)) {
+            pl2.speedY = 0;
+        } 
+        else if (event.code == "ArrowUp" && pl2.posY>0) {
+            pl2.speedY = 0;
+        }
+    });
+
     RAF(game);
 }
 
 function game() {
+    pl1.posY += pl1.speedY;
+    pl2.posY += pl2.speedY;
+    if (pl1.posY>(playFloor.getBoundingClientRect().height - player1.getBoundingClientRect().height)) {pl1.posY = playFloor.getBoundingClientRect().height - player1.getBoundingClientRect().height; pl1.speedY = 0;}
+    if (pl1.posY<0) {pl1.posY = 0; pl1.speedY = 0;}
+    if (pl2.posY>(playFloor.getBoundingClientRect().height - player2.getBoundingClientRect().height)) {pl2.posY = playFloor.getBoundingClientRect().height - player1.getBoundingClientRect().height; pl2.speedY = 0;}
+    if (pl2.posY<0) {pl2.posY = 0; pl2.speedY = 0;}
+
     ballPlay.posX+=ballPlay.speedX;
         // вылетел ли мяч правее стены?   ГОЛ!
         if ( ballPlay.posX+ballPlay.width>areaPlay.width ) {
@@ -180,6 +195,8 @@ function game() {
         }
 
     ballPlay.update();
+    pl1.update();
+    pl2.update();
 
     return RAF(game);
 }

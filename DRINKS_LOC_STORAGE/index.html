@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Drinks</title>
+  </head>
+  <body>
+    <div id="drinks">
+      <div class="panel">
+        <input type="button" id="enterInf" value="Ввод информации о напитке" />
+        <input
+          type="button"
+          id="getInf"
+          value="Получение информации о напитке"
+        />
+        <input
+          type="button"
+          id="delInf"
+          value="Удаление информации о напитке"
+        />
+        <input
+          type="button"
+          id="allDrinksList"
+          value="Перечень всех напитков"
+        />
+      </div>
+      <div class="container">
+        <div class="keys">
+          <p>Список всех напитков:</p>
+          <p id="drinklist" hidden="true"></p>
+        </div>
+        <div class="info">
+          <p>Информация о напитке:</p>
+          <p id="drink" hidden="true"></p>
+          <p id="alco" hidden="true"></p>
+          <p id="recipe" hidden="true"></p>
+          <p id="ingr" hidden="true"></p>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div id="food">
+      <div class="panel">
+        <input type="button" id="enterInf" value="Ввод информации о блюде" />
+        <input type="button" id="getInf" value="Получение информации о блюде" />
+        <input type="button" id="delInf" value="Удаление информации о блюде" />
+        <input type="button" id="allDrinksList" value="Перечень всех блюд" />
+      </div>
+      <div class="container">
+        <div class="keys">
+          <p>Список всех блюд:</p>
+          <p id="drinklist" hidden="true"></p>
+        </div>
+        <div class="info">
+          <p>Информация о блюде:</p>
+          <p id="drink" hidden="true"></p>
+          <p id="alco" hidden="true"></p>
+          <p id="recipe" hidden="true"></p>
+          <p id="ingr" hidden="true"></p>
+        </div>
+      </div>
+    </div>
+    <script src="LocStorage.js"></script>
+    <script>
+      var hashDrinks = new LocStorage("dr");
+
+      var hashDrinksView = new HashStorageView();
+      var hashDrinksController = new HashStorageController();
+      var drinksContainer = document.getElementById("drinks");
+      hashDrinks.start(hashDrinksView);
+      hashDrinksView.start(hashDrinks, drinksContainer);
+      hashDrinksController.start(hashDrinks, drinksContainer);
+      hashDrinks.updateView();
+
+      var hashFood = new LocStorage("foo");
+
+      var hashFoodView = new HashStorageView();
+      var hashFoodController = new HashStorageController();
+      var foodContainer = document.getElementById("food");
+      hashFood.start(hashFoodView);
+      hashFoodView.start(hashFood, foodContainer);
+      hashFoodController.start(hashFood, foodContainer);
+      hashFood.updateView();
+    </script>
+  </body>
+</html>

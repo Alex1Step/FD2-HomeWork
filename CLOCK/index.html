@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>CLOCK</title>
+  </head>
+  <body>
+    <style>
+      .SClocksTable td {
+        border-style: none;
+      }
+      .SClocksTable div {
+        margin: 20px 0 5px 0;
+        font-size: 12px;
+      }
+      .SClocksTable img {
+        width: 200px;
+      }
+    </style>
+    <table class="SClocksTable">
+      <tbody>
+        <tr>
+          <td id="dom1">
+            <div id="contr">
+              <input type="button" id="stop" value="стоп" />
+              <input type="button" id="start" value="старт" />
+              <span id="citygmt"></span>
+            </div>
+            <div id="viewDOM"></div>
+          </td>
+          <td id="svg1">
+            <div id="contr">
+              <input type="button" id="stop" value="стоп" />
+              <input type="button" id="start" value="старт" />
+              <span id="citygmt"></span>
+            </div>
+            <div id="viewSVG">
+              <svg id="CLEAR"></svg>
+            </div>
+          </td>
+          <td id="canvas1">
+            <div id="contr">
+              <input type="button" id="stop" value="стоп" />
+              <input type="button" id="start" value="старт" />
+              <span id="citygmt"></span>
+            </div>
+            <div id="viewCANVAS">
+              <canvas id="CLEAR"></canvas>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td id="dom2">
+            <div id="contr">
+              <input type="button" id="stop" value="стоп" />
+              <input type="button" id="start" value="старт" />
+              <span id="citygmt"></span>
+            </div>
+            <div id="viewDOM"></div>
+          </td>
+          <td id="svg2">
+            <div id="contr">
+              <input type="button" id="stop" value="стоп" />
+              <input type="button" id="start" value="старт" />
+              <span id="citygmt"></span>
+            </div>
+            <div id="viewSVG">
+              <svg id="CLEAR"></svg>
+            </div>
+          </td>
+          <td id="canvas2">
+            <div id="contr">
+              <input type="button" id="stop" value="стоп" />
+              <input type="button" id="start" value="старт" />
+              <span id="citygmt"></span>
+            </div>
+            <div id="viewCANVAS">
+              <canvas id="CLEAR"></canvas>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <script src="Clock.js"></script>
+    <script src="ClockViewDOM.js"></script>
+    <script src="ClockViewSVG.js"></script>
+    <script src="ClockViewCanvas.js"></script>
+    <script src="ClockControllerButtons.js"></script>
+    <script>
+      //создание объектов dom1
+      var dom1C = new Clock("Нью-Йорк");
+      var dom1CView = new ClockViewDOM();
+      var dom1CController = new ClockControllerButtons();
+      var dom1CContainer = document.getElementById("dom1");
+      //инициализация
+      dom1C.start(dom1CView);
+      dom1CView.start(dom1C, dom1CContainer);
+      dom1CController.start(dom1C, dom1CContainer);
+      dom1C.updateView();
+      //создание объектов dom2
+      var dom2C = new Clock("Минск");
+      var dom2CView = new ClockViewDOM();
+      var dom2CController = new ClockControllerButtons();
+      var dom2CContainer = document.getElementById("dom2");
+      //инициализация
+      dom2C.start(dom2CView);
+      dom2CView.start(dom2C, dom2CContainer);
+      dom2CController.start(dom2C, dom2CContainer);
+      dom2C.updateView();
+      //создание объектов svg1
+      var svg1C = new Clock("Лондон");
+      var svg1CView = new ClockViewSVG();
+      var svg1CController = new ClockControllerButtons();
+      var svg1CContainer = document.getElementById("svg1");
+      //инициализация
+      svg1C.start(svg1CView);
+      svg1CView.start(svg1C, svg1CContainer);
+      svg1CController.start(svg1C, svg1CContainer);
+      svg1C.updateView();
+      //создание объектов svg2
+      var svg2C = new Clock("Токио");
+      var svg2CView = new ClockViewSVG();
+      var svg2CController = new ClockControllerButtons();
+      var svg2CContainer = document.getElementById("svg2");
+      //инициализация
+      svg2C.start(svg2CView);
+      svg2CView.start(svg2C, svg2CContainer);
+      svg2CController.start(svg2C, svg2CContainer);
+      svg2C.updateView();
+      //создание объектов canvas1
+      var canvas1C = new Clock("Берлин");
+      var canvas1CView = new ClockViewCANVAS();
+      var canvas1CController = new ClockControllerButtons();
+      var canvas1CContainer = document.getElementById("canvas1");
+      //инициализация
+      canvas1C.start(canvas1CView);
+      canvas1CView.start(canvas1C, canvas1CContainer);
+      canvas1CController.start(canvas1C, canvas1CContainer);
+      canvas1C.updateView();
+      //создание объектов canvas2
+      var canvas2C = new Clock("Владивосток");
+      var canvas2CView = new ClockViewCANVAS();
+      var canvas2CController = new ClockControllerButtons();
+      var canvas2CContainer = document.getElementById("canvas2");
+      //инициализация
+      canvas2C.start(canvas2CView);
+      canvas2CView.start(canvas2C, canvas2CContainer);
+      canvas2CController.start(canvas2C, canvas2CContainer);
+      canvas2C.updateView();
+    </script>
+  </body>
+</html>

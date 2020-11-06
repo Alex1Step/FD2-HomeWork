@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 var diamBase = 300; //диаметр диска часов
 var diamNum = 30; //диаметр кругов вокруг цифр

@@ -57,8 +57,7 @@ function forSubmitBtn(newLine){
   return txtVar;
 }
 
-function formBuilder(formArrGet){
-  var formArr = formArrGet.formDef
+function formBuilder(formArr){
   var tagForm=document.createElement("form");
   tagForm.setAttribute('action', "https://fe.it-academy.by/TestForm.php")
   var tabVar = document.createElement("table"); tagForm.appendChild(tabVar);
@@ -108,5 +107,25 @@ function formBuilder(formArrGet){
   document.body.appendChild(tagForm);
 }
 
-$.ajax("/formDef1.json", { type:'GET', dataType:'json', success:formBuilder});
-$.ajax("/formDef2.json", { type:'GET', dataType:'json', success:formBuilder});
+function buildF() {
+  var result1=undefined;
+  var result2=undefined;
+
+  function nextResult() {
+      if ( result1===undefined ) {
+          $.ajax("/formDef.json",
+              { type:'GET', dataType:'json', success:function(data) { result1=data; console.log(data); formBuilder(result1.formDef1); nextResult();}}
+          );
+          return;
+      }
+      if ( result2===undefined ) {
+          $.ajax("/formDef.json",
+              { type:'GET', dataType:'json', success:function(data) { result2=data; formBuilder(result2.formDef2);}}
+          );
+          return;
+      }
+  }
+  nextResult();
+}
+
+buildF();

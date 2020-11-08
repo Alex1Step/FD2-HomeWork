@@ -1,69 +1,71 @@
 'use strict'
 
 function AJAXStorage() {
-    var ajaxHandlerScript="https://fe.it-academy.by/AjaxStringStorage2.php";
+    var self = this
+    self.ajaxHandlerScript="https://fe.it-academy.by/AjaxStringStorage2.php";
     var updatePassword;
     var stringName='STEPANCHUK_DRINKS_STORAGE';
     var myModel = null;
 
-    this.start=function(model) {
+    self.start=function(model) {
         myModel=model;
     }
 
-    this.storeInfo=function(){
-        this.updatePassword=Math.random();
+    self.storeInfo=function(){
+        self.updatePassword=Math.random();
         $.ajax( {
-                url : this.ajaxHandlerScript, type : 'POST', cache : false, dataType:'json',
-                data : { f : 'LOCKGET', n : this.stringName, p : this.updatePassword },
-                success : this.lockGetReady, error : this.errorHandler
+                url : self.ajaxHandlerScript, type : 'POST', cache : false, dataType:'json',
+                data : { f : 'LOCKGET', n : stringName, p : self.updatePassword },
+                success : self.lockGetReady, error : self.errorHandler
             }
         );
     }
 
-    this.lockGetReady = function (callresult) {
-        if ( callresult.error!=undefined )
+    self.lockGetReady = function (callresult) {
+        if ( callresult.error!=undefined ){
             alert(callresult.error);
+        }
         else {
             // нам всё равно, что было прочитано -
             // всё равно перезаписываем
-            var info=myModel.storage;
+            var info=myModel.stForAjax;
+            console.log(info);
             $.ajax( {
-                    url : this.ajaxHandlerScript, type : 'POST', cache : false, dataType:'json',
-                    data : { f : 'UPDATE', n : this.stringName, v : JSON.stringify(info), p : this.updatePassword },
-                    success : this.updateReady, error : this.errorHandler
+                    url : self.ajaxHandlerScript, type : 'POST', cache : false, dataType:'json',
+                    data : { f : 'UPDATE', n : stringName, v : JSON.stringify(info), p : self.updatePassword },
+                    success : self.updateReady, error : self.errorHandler
                 }
             );
         }
     }
 
-    this.updateReady = function (callresult) {
+    self.updateReady = function (callresult) {
         if ( callresult.error!=undefined )
             alert(callresult.error);
     }
 
-// function restoreInfo() {
-//     $.ajax(
-//         {
-//             url : ajaxHandlerScript, type : 'POST', cache : false, dataType:'json',
-//             data : { f : 'READ', n : stringName },
-//             success : readReady, error : errorHandler
-//         }
-//     );
-// }
+    self.restoreInfo = function () {
+        $.ajax(
+            {
+                url : self.ajaxHandlerScript, type : 'POST', cache : false, dataType:'json',
+                data : { f : 'READ', n : stringName },
+                success : self.readReady, error : self.errorHandler
+            }
+        );
+    }
 
-// function readReady(callresult) {
-//     if ( callresult.error!=undefined )
-//         alert(callresult.error);
-//     else if ( callresult.result!="" ) {
-//         var info=JSON.parse(callresult.result);
-//         document.getElementById('IName').value=info.name;
-//         document.getElementById('IAge').value=info.age;
-//     }
-// }
+    self.readReady = function (callresult) {
+        if ( callresult.error!=undefined )
+            alert(callresult.error);
+        else if ( callresult.result!="" ) {
+            var info=JSON.parse(callresult.result);
+            myModel.stForAjax = info;
+        }
+    }
 
-// function errorHandler(jqXHR,statusStr,errorStr) {
-//     alert(statusStr+' '+errorStr);
-// }
+function errorHandler(jqXHR,statusStr,errorStr) {
+    alert(statusStr+' '+errorStr);
+}
 
-// restoreInfo();
+self.restoreInfo();
 }

@@ -3,66 +3,72 @@
     // model
 
     function LocStorage(kind) {
+        var self = this;
         var contin = window.localStorage.getItem(kind);
         if (contin) var storage=JSON.parse(contin);
+        else if (self.stForAjax) storage = self.stForAjax
         else var storage = {};
-        this.name = null;
-        this.about = null;
-        this.flag = false;
+        self.name = null;
+        self.about = null;
+        self.flag = false;
+        self.stForAjax = storage;
         
         var myView = null;
         var myAJAX = null;
 
-        this.start=function(view, ajaxV) {
+        self.start=function(view, ajaxV) {
             myView=view;
             myAJAX=ajaxV;
         };
 
-        this.updateView=function() {
+        self.updateView=function() {
             if ( myView ) myView.update();
         };
 
-        this.saveOnAJAX=function() {
+        self.saveOnAJAX=function() {
             if ( myAJAX ) myAJAX.storeInfo();
         };
 
-        this.addValue = function(key, value) {
+        self.addValue = function(key, value) {
             storage[key] = value;
             window.localStorage.setItem(kind,JSON.stringify(storage));
-            this.saveOnAJAX();
+            self.stForAjax = storage;
+            self.saveOnAJAX();
         };
 
-        this.getValue = function(key) {
+        self.getValue = function(key) {
             return storage[key];
         };
 
-        this.deleteValue = function(key) {
+        self.deleteValue = function(key) {
             if (!(key in storage)) return false
             delete storage[key];
             window.localStorage.setItem(kind,JSON.stringify(storage));
-            this.saveOnAJAX();
+            self.stForAjax = storage;
+            self.saveOnAJAX();
             return true;
         };
 
-        this.getKeys = function() {
+        self.getKeys = function() {
             return (Object.keys(storage));
         };
 
-        this.printInfo = function(cname, cabout){
-            this.name = cname;
-            this.about = cabout;
-            this.updateView();
+        self.printInfo = function(cname, cabout){
+            self.name = cname;
+            self.about = cabout;
+            self.updateView();
         }
 
-        this.printAll = function(cflag) {
-            this.flag = cflag;
-            this.updateView();
+        self.printAll = function(cflag) {
+            self.flag = cflag;
+            self.updateView();
         }
     };
 
     // view
 
     function HashStorageView() {
+        var self = this;
         var myModel = null;
         var myField = null;
         var drink = null;
@@ -71,7 +77,7 @@
         var ingr = null;
         var drinklist = null;
 
-        this.start=function(model,field) {
+        self.start=function(model,field) {
             myModel=model;
             myField=field;
 
@@ -83,7 +89,7 @@
             drinklist=myField.querySelector('#drinklist');
         }
 
-        this.update=function() {
+        self.update=function() {
             if (myModel.about && myModel.name) {
                 drink.hidden = false
                 drink.innerHTML = "Напиток: " + myModel.name;
@@ -106,24 +112,25 @@
     // controller
 
     function HashStorageController() {
+        var self = this;
         var myModel = null; 
         var myField = null;
 
-        this.start=function(model,field) {
+        self.start=function(model,field) {
             myModel=model;
             myField=field;
 
             var eInf=myField.querySelector('#enterInf');
-            eInf.addEventListener('click',this.enterInf);
+            eInf.addEventListener('click',self.enterInf);
             var gInf=myField.querySelector('#getInf');
-            gInf.addEventListener('click',this.getInf);
+            gInf.addEventListener('click',self.getInf);
             var dInf=myField.querySelector('#delInf');
-            dInf.addEventListener('click',this.delInf);
+            dInf.addEventListener('click',self.delInf);
             var aInf=myField.querySelector('#allDrinksList');
-            aInf.addEventListener('click',this.allDrinksList);
+            aInf.addEventListener('click',self.allDrinksList);
         }
 
-        this.enterInf=function() {
+        self.enterInf=function() {
             var drinkName = prompt("Введите название напитка");
             var drinkIsAlko = prompt("Напиток алкогольный? ДА/НЕТ");
             var drinkRecipe = prompt("Введите рецепт напитка");
@@ -131,7 +138,7 @@
             myModel.addValue(drinkName, {"alko":drinkIsAlko, "recipe":drinkRecipe, "ingredients":drinkIngr});
         }
 
-        this.getInf=function() {
+        self.getInf=function() {
             var reqDrinkName = prompt("Введите название напитка");
             var currentCoctail = myModel.getValue(reqDrinkName);
             if (currentCoctail) {
@@ -140,13 +147,13 @@
             else alert("Выбранного коктейля нет в списке!")
         }
 
-        this.delInf=function() {
+        self.delInf=function() {
             var reqDrinkName = prompt("Введите название напитка");
             if (myModel.deleteValue(reqDrinkName)) return alert("Коктейль удалён из списка!")
             else return alert("Такого коктейля нет в списке");
         }
 
-        this.allDrinksList=function() {
+        self.allDrinksList=function() {
             myModel.printAll(true);
         }
 

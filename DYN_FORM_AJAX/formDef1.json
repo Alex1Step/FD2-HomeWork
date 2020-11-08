@@ -7,13 +7,7 @@
     {"label":"Размещение:","kind":"radio","name":"payment",
     "variants":[{"text":"бесплатное","value":1},{"text":"платное","value":2},{"text":"VIP","value":3}]},
     {"label":"Разрешить отзывы:","kind":"check","name":"votes"}, {"label":"Описание сайта:","kind":"memo","name":"description"},
-    {"label":"Опубликовать:","kind":"submit"}],
-    "formDef2":[
-        {"label":"Фамилия:","kind":"longtext","name":"lastname"},
-        {"label":"Имя:","kind":"longtext","name":"firstname"},
-        {"label":"Отчество:","kind":"longtext","name":"secondname"},
-        {"label":"Возраст:","kind":"number","name":"age"},
-        {"label":"Зарегистрироваться:","kind":"submit"}
-      ]
+    {"label":"Опубликовать:","kind":"submit"}
+  ]
 }
     

@@ -113,13 +113,13 @@ function buildF() {
 
   function nextResult() {
       if ( result1===undefined ) {
-          $.ajax("/formDef.json",
-              { type:'GET', dataType:'json', success:function(data) { result1=data; console.log(data); formBuilder(result1.formDef1); nextResult();}}
+          $.ajax("/formDef1.json",
+              { type:'GET', dataType:'json', success:function(data) { result1=data; formBuilder(result1.formDef1); nextResult();}}
           );
           return;
       }
       if ( result2===undefined ) {
-          $.ajax("/formDef.json",
+          $.ajax("/formDef2.json",
               { type:'GET', dataType:'json', success:function(data) { result2=data; formBuilder(result2.formDef2);}}
           );
           return;

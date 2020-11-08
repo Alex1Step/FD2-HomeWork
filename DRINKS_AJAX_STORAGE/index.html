@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Drinks</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="drinks">
+      <div class="panel">
+        <input type="button" id="enterInf" value="Ввод информации о напитке" />
+        <input
+          type="button"
+          id="getInf"
+          value="Получение информации о напитке"
+        />
+        <input
+          type="button"
+          id="delInf"
+          value="Удаление информации о напитке"
+        />
+        <input
+          type="button"
+          id="allDrinksList"
+          value="Перечень всех напитков"
+        />
+      </div>
+      <div class="container">
+        <div class="keys">
+          <p>Список всех напитков:</p>
+          <p id="drinklist" hidden="true"></p>
+        </div>
+        <div class="info">
+          <p>Информация о напитке:</p>
+          <p id="drink" hidden="true"></p>
+          <p id="alco" hidden="true"></p>
+          <p id="recipe" hidden="true"></p>
+          <p id="ingr" hidden="true"></p>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div id="food">
+      <div class="panel">
+        <input type="button" id="enterInf" value="Ввод информации о блюде" />
+        <input type="button" id="getInf" value="Получение информации о блюде" />
+        <input type="button" id="delInf" value="Удаление информации о блюде" />
+        <input type="button" id="allDrinksList" value="Перечень всех блюд" />
+      </div>
+      <div class="container">
+        <div class="keys">
+          <p>Список всех блюд:</p>
+          <p id="drinklist" hidden="true"></p>
+        </div>
+        <div class="info">
+          <p>Информация о блюде:</p>
+          <p id="drink" hidden="true"></p>
+          <p id="alco" hidden="true"></p>
+          <p id="recipe" hidden="true"></p>
+          <p id="ingr" hidden="true"></p>
+        </div>
+      </div>
+    </div>
+    <script src="Storage.js"></script>
+    <script src="AJAXStorage.js"></script>
+    <script>
+      var hashDrinks = new LocStorage("dr");
+
+      var hashDrinksView = new HashStorageView();
+      var hashDrinksController = new HashStorageController();
+      var hashDrinksAJAX = new AJAXStorage(); // AJAX
+      var drinksContainer = document.getElementById("drinks");
+      hashDrinks.start(hashDrinksView, hashDrinksAJAX);
+      hashDrinksView.start(hashDrinks, drinksContainer);
+      hashDrinksAJAX.start(hashDrinks); //AJAX
+      hashDrinksController.start(hashDrinks, drinksContainer);
+      hashDrinks.updateView();
+
+      var hashFood = new LocStorage("foo");
+
+      var hashFoodView = new HashStorageView();
+      var hashFoodController = new HashStorageController();
+      var hashFoodAJAX = new AJAXStorage(); // AJAX
+      var foodContainer = document.getElementById("food");
+      hashFood.start(hashFoodView, hashFoodAJAX);
+      hashFoodView.start(hashFood, foodContainer);
+      hashFoodAJAX.start(hashFood); //AJAX
+      hashFoodController.start(hashFood, foodContainer);
+      hashFood.updateView();
+    </script>
+  </body>
+</html>

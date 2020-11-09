@@ -26,10 +26,7 @@ function AJAXStorage() {
             alert(callresult.error);
         }
         else {
-            // нам всё равно, что было прочитано -
-            // всё равно перезаписываем
             var info=myModel.stForAjax;
-            console.log(info);
             $.ajax( {
                     url : self.ajaxHandlerScript, type : 'POST', cache : false, dataType:'json',
                     data : { f : 'UPDATE', n : stringName, v : JSON.stringify(info), p : self.updatePassword },

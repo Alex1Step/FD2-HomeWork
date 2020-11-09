@@ -6,7 +6,6 @@
         var self = this;
         var contin = window.localStorage.getItem(kind);
         if (contin) var storage=JSON.parse(contin);
-        else if (self.stForAjax) storage = self.stForAjax
         else var storage = {};
         self.name = null;
         self.about = null;
@@ -19,6 +18,7 @@
         self.start=function(view, ajaxV) {
             myView=view;
             myAJAX=ajaxV;
+            if (Object.keys(storage).length===0) myAJAX.restoreInfo();
         };
 
         self.updateView=function() {
@@ -32,11 +32,13 @@
         self.addValue = function(key, value) {
             storage[key] = value;
             window.localStorage.setItem(kind,JSON.stringify(storage));
+            if (Object.keys(storage).length===0) storage = self.stForAjax;
             self.stForAjax = storage;
             self.saveOnAJAX();
         };
 
         self.getValue = function(key) {
+            if (Object.keys(storage).length===0) storage = self.stForAjax;
             return storage[key];
         };
 
@@ -50,16 +52,19 @@
         };
 
         self.getKeys = function() {
+            if (Object.keys(storage).length===0) storage = self.stForAjax;
             return (Object.keys(storage));
         };
 
         self.printInfo = function(cname, cabout){
+            if (Object.keys(storage).length===0) storage = self.stForAjax;
             self.name = cname;
             self.about = cabout;
             self.updateView();
         }
 
         self.printAll = function(cflag) {
+            if (Object.keys(storage).length===0) storage = self.stForAjax;
             self.flag = cflag;
             self.updateView();
         }

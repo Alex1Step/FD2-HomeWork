@@ -45,10 +45,8 @@
     <script>
       var hashDrinksAJAX = new AJAXStorage(); // AJAX
       var hashDrinks = new LocStorage("dr");
-
       var hashDrinksView = new HashStorageView();
       var hashDrinksController = new HashStorageController();
-
       var drinksContainer = document.getElementById("drinks");
       hashDrinks.start(hashDrinksView, hashDrinksAJAX);
       hashDrinksView.start(hashDrinks, drinksContainer);
